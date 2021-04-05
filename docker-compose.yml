@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  mtr2mqtt:
+    image: tvallas/mtr2mqtt:latest
+    container_name: mtr2mqtt
+    restart: always
+    depends_on: 
+      - mosquitto
+    volumes:
+      - type: bind
+        source: "./metadata.yml"
+        target: "/tmp/metadata.yml"
+    environment:
+      MTR2MQTT_MQTT_HOST: "mosquitto"
+      MTR2MQTT_METADATA_FILE: "/tmp/metadata.yml"
+      MTR2MQTT_QUIET: "true"
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: always
+    volumes:
+    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    - telegraf_data:/tmp/telegraf/
+    env_file:
+    - 'influxdb.env'
+    depends_on: 
+    - influxdb
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+    depends_on: 
+    - influxdb
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    env_file:
+      - 'influxdb.env'
+    environment: 
+      - INFLUXDB_REPORTING_DISABLED=true
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on: 
+    - influxdb
+volumes: 
+  telegraf_data:
+  influxdb_data:
+  grafana-storage:
