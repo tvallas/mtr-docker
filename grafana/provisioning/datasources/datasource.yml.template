@@ -7,7 +7,7 @@ deleteDatasources:
     orgId: 1
 
 datasources:
-  - name: influxdb
+  - name: Influxdb
     type: influxdb
     access: proxy
     orgId: 1
