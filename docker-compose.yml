@@ -31,10 +31,13 @@ services:
     image: eclipse-mosquitto:latest
     container_name: mosquitto
     restart: always
+    volumes:
+      - type: bind
+        source: "./mosquitto.conf"
+        target: "/mosquitto/config/mosquitto.conf"
+      - mosquitto_data:/mosquitto/data/
     ports:
       - "1883:1883"
-    depends_on: 
-    - influxdb
   influxdb:
     image: influxdb:1.8
     container_name: influxdb
@@ -58,6 +61,7 @@ services:
     depends_on: 
     - influxdb
 volumes: 
+  mosquitto_data:
   telegraf_data:
   influxdb_data:
   grafana-storage:
