@@ -1,6 +1,6 @@
 # mtr2grafana
 
-A docker-compose file + sample configs for MTR receiver data visualization in Grafana. Note that the setup won't work purely on macOS since the usb serial port mapping to docker containers is basically undoable. 
+A docker-compose file + sample configs for MTR receiver data visualization in Grafana. Note that since the setup requires serial port direction to docker container on macOS it is required to use docker-machine + virtual box as docker vm.
 
 Services used:
 - [mtr2mqtt](https://github.com/tvallas/mtr2mqtt/), for transferring and enriching data from Nokeval MTR series transmitters to MQTT
