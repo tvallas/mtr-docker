@@ -1,0 +1,22 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Graphite
+    orgId: 1
+
+datasources:
+  - name: Influxdb
+    type: influxdb
+    access: proxy
+    orgId: 1
+    url: http://influxdb:8086
+    user: admin
+    database: telegraf
+    basicAuth: false
+    isDefault: true
+    secureJsonData:
+      password: reallysecurepassgoeshere
+    version: 1
+    editable: false

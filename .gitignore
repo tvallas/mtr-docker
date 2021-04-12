@@ -142,4 +142,4 @@ sample_metadata.yml
 .vscode/
 influxdb.env
 telegraf.env
-
+**/datasource.yml
