@@ -5,7 +5,7 @@ A docker-compose file + sample configs for MTR receiver data visualization in Gr
 Services used:
 - [mtr2mqtt](https://github.com/tvallas/mtr2mqtt/), for transferring and enriching data from Nokeval MTR series transmitters to MQTT
 - [Mosquitto](https://mosquitto.org/), MQTT Broker
-- [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), to read the measurement data and pass it to ..
+- [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), transmitting data from Mosquitto to database
 - [InfluxDB](https://www.influxdata.com/products/influxdb/), time-series database
 - [Grafana](https://grafana.com/), time-series visualization tool 
 
@@ -15,28 +15,35 @@ All running in Docker without stuff installed in the host
 
 - `docker-compose.yml`, Docker compose file for defining the system 
 - `influxdb.evn.template`, template for defining the DB and USER&PASS of Influxdb
+- `mosquitto.conf`, mosquitto configuration file
 - `telegraf.conf`, telegraf configuration file for transmitting measurements from MQTT to InfluxDB
 - `metadata.yml`, sample metadata file for mtr2mqtt
+- `grafana/provisioning/dashboards`, files for sample dashboard etc.
+- `grafana/provisioning/datasources`, datasource configuration file
 
 ## Usage
 1. Add metadata (location, unit, quantity, description) for transmitters in metadata.yml
 
-2. Set a user and password for influxdb 
+2. Set password for influxdb 
 ```bash
 cp influxdb.env.template influxdb.env
 ```
-and just add username and password in the `influxdb.env`-file
+and add the password in the `influxdb.env` file
 
-3. Get data flowing
+3. Set the same password for grafana datasource config
+```
+cp grafana/provisioning/datasources/datasource.yml.template grafana/provisioning/datasources/datasource.yml.
+```
+and add the pasword in the `grafana/provisioning/datasources/datasource.yml` file
+
+4. Get data flowing
 
 ```bash
 docker-compose up 
 ```
 Check what is happening in the communication
 
-4. Point your web browser to Grafana @ http://localhost:3000 and add Influxdb (V1) as Grafana source with `http://influxdb:8086` as the URL and `telegraf` as the DB name
-
-5. Create some nifty dashboards
+5. Just a demo dashboard is added by default so just continue by creating some nifty dashboards
 
 ![grafana_dashboard](img/grafana.png)
    
