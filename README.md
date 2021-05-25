@@ -7,7 +7,8 @@ Services used:
 - [Mosquitto](https://mosquitto.org/), MQTT Broker
 - [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), transmitting data from Mosquitto to database
 - [InfluxDB](https://www.influxdata.com/products/influxdb/), time-series database
-- [Grafana](https://grafana.com/), time-series visualization tool 
+- [Grafana](https://grafana.com/), time-series visualization tool
+- [Traefik](https://traefik.io/), application proxy
 
 All running in Docker without stuff installed in the host
 
@@ -20,6 +21,7 @@ All running in Docker without stuff installed in the host
 - `metadata.yml`, sample metadata file for mtr2mqtt
 - `grafana/provisioning/dashboards`, files for sample dashboard etc.
 - `grafana/provisioning/datasources`, datasource configuration file
+- `.env.template`,  sample environment file for configuring Grafana and Traefik
 
 ## Usage
 1. Add metadata (location, unit, quantity, description) for transmitters in metadata.yml
@@ -36,14 +38,20 @@ cp grafana/provisioning/datasources/datasource.yml.template grafana/provisioning
 ```
 and add the pasword in the `grafana/provisioning/datasources/datasource.yml` file
 
-4. Get data flowing
+4. Configure .env file for Traefik and Grafana
+```
+cp .env.template .env
+```
+and configure the environment variables in `.env` file
+
+5. Get data flowing
 
 ```bash
 docker-compose up 
 ```
 Check what is happening in the communication
 
-5. Just a demo dashboard is added by default so just continue by creating some nifty dashboards
+6. Just a demo dashboard is added by default so just continue by creating some nifty dashboards
 
 ![grafana_dashboard](img/grafana.png)
    
