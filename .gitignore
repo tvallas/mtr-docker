@@ -143,3 +143,4 @@ sample_metadata.yml
 influxdb.env
 telegraf.env
 **/datasource.yml
+
