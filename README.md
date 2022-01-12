@@ -8,6 +8,7 @@ Services used:
 - [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), transmitting data from Mosquitto to database
 - [InfluxDB](https://www.influxdata.com/products/influxdb/), time-series database
 - [Grafana](https://grafana.com/), time-series visualization tool
+- [Grafana Image Renderer](https://grafana.com/docs/grafana/next/image-rendering/), Grafana image rendering
 - [Traefik](https://traefik.io/), application proxy
 
 All running in Docker without stuff installed in the host

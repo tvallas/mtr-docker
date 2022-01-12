@@ -74,6 +74,10 @@ services:
       - influxdb
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_SERVER_ROOT_URL: "https://$GRAFANA_FQDN"
+      GF_RENDERING_SERVER_URL: "http://renderer:8081/render"
+      GF_RENDERING_CALLBACK_URL: "http://grafana:3000/"
+      GF_LOG_FILTERS: "rendering:debug"
     labels:
       #### Labels define the behavior and rules of the traefik proxy for this container ####
       - "traefik.enable=true" # <== Enable traefik to proxy this container
@@ -84,6 +88,14 @@ services:
       - "traefik.http.routers.grafana-secured.rule=Host(`$GRAFANA_FQDN`)" # <== Your Domain Name for the https rule
       - "traefik.http.routers.grafana-secured.entrypoints=web-secured" # <== Defining entrypoint for https
       - "traefik.http.routers.grafana-secured.tls.certresolver=mytlschallenge" # <== Defining certsresolvers for https
+  renderer:
+    image: grafana/grafana-image-renderer:3.3.0
+    ports:
+      - 8081
+    environment:
+      ENABLE_METRICS: 'true'
+    networks:
+      - backend
   traefik:
       image: traefik:v2.4
       restart: always
